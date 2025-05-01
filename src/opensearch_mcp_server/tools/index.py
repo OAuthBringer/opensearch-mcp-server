@@ -49,3 +49,36 @@ class IndexTools(OpensearchClient):
             except Exception as e:
                 self.logger.error(f"Error getting settings: {e}")
                 return [TextContent(type="text", text=f"Error: {str(e)}")]
+
+        @mcp.tool(description="Create a new index in the Opensearch cluster")
+        async def create_index(index: str, body: dict) -> list[TextContent]:
+            """
+            Create a new index in the Opensearch cluster.
+
+            Args:
+                index: Name of the index to create
+                body: Index settings and mappings
+            """
+            self.logger.info(f"Creating index: {index} with body: {body}")
+            try:
+                response = self.es_client.indices.create(index=index, body=body)
+                return [TextContent(type="text", text=str(response))]
+            except Exception as e:
+                self.logger.error(f"Error creating index: {e}")
+                return [TextContent(type="text", text=f"Error: {str(e)}")]
+
+        @mcp.tool(description="Delete an index from the Opensearch cluster")
+        async def delete_index(index: str) -> list[TextContent]:
+            """
+            Delete an index from the Opensearch cluster.
+
+            Args:
+                index: Name of the index to delete
+            """
+            self.logger.info(f"Deleting index: {index}")
+            try:
+                response = self.es_client.indices.delete(index=index)
+                return [TextContent(type="text", text=str(response))]
+            except Exception as e:
+                self.logger.error(f"Error deleting index: {e}")
+                return [TextContent(type="text", text=f"Error: {str(e)}")]
