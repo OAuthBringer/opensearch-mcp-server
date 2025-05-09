@@ -4,6 +4,7 @@ from fastmcp import FastMCP
 from .tools.index import IndexTools
 from .tools.document import DocumentTools
 from .tools.cluster import ClusterTools
+from .tools.memory import MemoryTools
 
 class OpensearchMCPServer:
     def __init__(self):
@@ -16,21 +17,33 @@ class OpensearchMCPServer:
             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
         )
         self.logger = logging.getLogger(self.name)
+        self.tools = [
+            IndexTools, 
+            DocumentTools, 
+            ClusterTools, 
+            MemoryTools
+        ]
         
         # Initialize tools
         self._register_tools()
 
     def _register_tools(self):
         """Register all MCP tools."""
-        # Initialize tool classes
-        index_tools = IndexTools(self.logger)
-        document_tools = DocumentTools(self.logger)
-        cluster_tools = ClusterTools(self.logger)
-        
-        # Register tools from each module
-        index_tools.register_tools(self.mcp)
-        document_tools.register_tools(self.mcp)
-        cluster_tools.register_tools(self.mcp)
+
+        for tool in self.tools:
+            tool(self.logger).register_tools(self.mcp)
+#        # Initialize tool classes
+#        index_tools = IndexTools(self.logger)
+#        document_tools = DocumentTools(self.logger)
+#        cluster_tools = ClusterTools(self.logger)
+#        memory_tools = MemoryTools(self.logger)
+#        
+#        # Register tools from each module
+#        index_tools.register_tools(self.mcp)
+#        document_tools.register_tools(self.mcp)
+#        cluster_tools.register_tools(self.mcp)
+#        memory_tools.register_tools(self.mcp)
+#
 
     def run(self):
         """Run the MCP server."""
