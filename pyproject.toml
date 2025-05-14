@@ -9,6 +9,7 @@ dependencies = [
     "mcp>=1.0.0",
     "python-dotenv>=1.0.0",
     "fastmcp>=0.4.0",
+    "PyYAML>=6.0",
 ]
 
 [project.license]
@@ -22,3 +23,23 @@ requires = [
     "hatchling",
 ]
 build-backend = "hatchling.build"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-mock>=3.10.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "mypy>=1.0.0",
+    "ruff>=0.0.241",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+markers = [
+    "integration: marks tests as integration tests (select with -m integration)",
+    "unit: marks tests as unit tests (select with -m unit)",
+]

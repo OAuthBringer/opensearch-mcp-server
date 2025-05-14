@@ -1,0 +1,38 @@
+index_name: test_index
+settings:
+  number_of_shards: 1
+  number_of_replicas: 0
+  analysis:
+    analyzer:
+      custom_analyzer:
+        type: custom
+        tokenizer: standard
+        filter: [lowercase, stop]
+mappings:
+  properties:
+    id:
+      type: keyword
+    title:
+      type: text
+      analyzer: custom_analyzer
+      fields:
+        keyword:
+          type: keyword
+          ignore_above: 256
+    description:
+      type: text
+    tags:
+      type: keyword
+    created_at:
+      type: date
+    updated_at:
+      type: date
+    metadata:
+      type: object
+      properties:
+        author:
+          type: keyword
+        status:
+          type: keyword
+        priority:
+          type: integer
