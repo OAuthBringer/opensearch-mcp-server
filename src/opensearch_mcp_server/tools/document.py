@@ -99,11 +99,10 @@ class DocumentTools(OpensearchClient):
             self.logger.info(f"Updating document in index: {index} with ID: {id} and partial update: {body}")
             try:
                 # Wrap the body in a 'doc' object as required by the update API
-                update_body = {"doc": body}
                 response = self.es_client.update(
                     index=index, 
                     id=id, 
-                    body=update_body,
+                    body=body,
                     retry_on_conflict=retry_on_conflict
                 )
                 return [TextContent(type="text", text=str(response))]
